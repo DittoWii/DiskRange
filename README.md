@@ -56,23 +56,21 @@ bash scripts/a_run_search.sh <config> <gt_json>      # explicit config / GT
 The base and query vectors themselves are not distributed; point the config at
 your own `.fbin` files.
 
-## Optional Data HNSW Emptiness Oracle
+## Contributions
 
-DiskRange supports an opt-in raw-data HNSW emptiness oracle for range search.
-It is disabled by default; existing configs produce no `_data_hnsw_file.bin`
-and search does not try to read it.
+Querying runs a three-layer in-memory cascade inside `DiskRange::search()`
+(`lib/DiskRange.h`); the matching index structures are built in
+`DiskRange::build()`. Each layer prunes more candidates before any disk read.
 
-To enable it, add `data_hnsw_enabled true` to the build/search config.  The
-defaults are `data_hnsw_M 16`, `data_hnsw_ef_construction 100`,
-`data_hnsw_ef 100`, and `data_hnsw_margin_delta 0.0`.  The artifact path
-is derived from the GT JSON `index.prefix` as
-`<index_prefix>_diskrange/_data_hnsw_file.bin`, matching the existing
-DiskRange artifact paths.
+1. **Query Classifier (Section IV)** — drops empty-result queries in memory.
+   Mainly `lib/FastPathEmptinessOracle.h` (the `fast_path_*` oracle), with the
+   centroid graph in `lib/SQGCentroidIndex.h` and the 1-bit RaBitQ codes in
+   `lib/RBQCodeStorage.h`.
+2. **Cluster Pruner (Section V)** — prunes whole clusters with the PCA-box and
+   slab bounds. The bounds (`pca_lower_bound` / `pca_slab_lower_bound`) and their
+   index-time fitting live in `lib/ClusterIO.h`, the local PCA in `lib/PcaFit.h`.
+3. **I/O Optimizer (Section VI)** — reads only the surviving cells via `io_uring`
+   + `O_DIRECT`. Cell splitting in `lib/PcaFit.h`, the per-cell bound
+   `cell_lb_batch` in `utils/dist_func.h`, and the streaming reader
+   `submit_and_drain` in `lib/ClusterIO.h`.
 
-## License
-
-DiskRange is distributed under the GNU Affero General Public License v3.0; see
-`LICENSE`. It bundles third-party components under `third/` (including an
-AGPL-3.0 component derived from Intel Scalable Vector Search, which is why the
-combined work is AGPL-3.0). See `THIRD_PARTY_LICENSES.md` for the full
-inventory and per-component licenses.
