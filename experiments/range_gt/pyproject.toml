@@ -1,0 +1,11 @@
+[project]
+name = "range-gt"
+version = "0.1.0"
+description = "One-off experiment: brute-force L2 range-search groundtruth for GIST1M."
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.0",
+]
+
+[tool.uv]
+package = false

@@ -1,0 +1,16 @@
+build
+build_*
+!expr/build/
+!expr/build/main.cpp
+!expr/build_stats/
+!expr/build_stats/main.cpp
+!expr/build_prune_stats/
+!expr/build_prune_stats/main.cpp
+!tests/build_search_entrypoints_test.sh
+__pycache__
+datasets/data
+.claude
+.codex
+.worktrees
+.clangd
+experiments/PCA_enhancement/gemm_kernel_microbench/result.json

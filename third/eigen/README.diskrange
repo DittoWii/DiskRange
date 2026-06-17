@@ -1,0 +1,16 @@
+Eigen 3.4.0 vendored for DiskRange
+
+Source: Eigen 3.4.0 (header-only), copied from a system libeigen3-dev install.
+
+Version: Eigen 3.4.0 (EIGEN_WORLD_VERSION 3 / EIGEN_MAJOR_VERSION 4 /
+EIGEN_MINOR_VERSION 0).
+
+Use in this repository: header-only dependency for lib/PcaFit.h, specifically
+Eigen::JacobiSVD<Eigen::MatrixXd> used by the PCA enclosing-ball prune.
+
+License / provenance files:
+- COPYING.MPL2: Mozilla Public License 2.0 text.
+- COPYRIGHT.Debian: Debian libeigen3-dev copyright metadata.
+
+The full Eigen include tree was vendored to avoid manually curating nested
+header dependencies. See THIRD_PARTY_LICENSES.md for the project-level summary.

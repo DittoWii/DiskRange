@@ -1,0 +1,11 @@
+cell_candidate_vectors=69355691
+cell_kept_vectors=34607690
+cell_pruned_vectors=34748001
+combined_pruned_clusters=1944195
+dist_comp=34607690
+pca_only_pruned_clusters=881622
+recall=1.00002
+slab_only_pruned_clusters=1809426
+triangle_pruned_clusters=1944195
+zero_kept_cells=2098649
+zero_kept_surviving_clusters=67155
