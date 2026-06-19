@@ -1,10 +1,3 @@
-# DiskRange
-
-DiskRange is a disk-resident range-search engine for high-dimensional vectors.
-It combines an IVF partitioning, RaBitQ quantization, a SymphonyQG-style
-emptiness oracle, and `io_uring` asynchronous I/O to answer radius queries while
-keeping most of the data on disk.
-
 ## Building
 
 Requirements:
@@ -66,8 +59,8 @@ Querying runs a three-layer in-memory cascade inside `DiskRange::search()`
    Mainly `lib/FastPathEmptinessOracle.h` (the `fast_path_*` oracle), with the
    centroid graph in `lib/SQGCentroidIndex.h` and the 1-bit RaBitQ codes in
    `lib/RBQCodeStorage.h`.
-2. **Cluster Pruner (Section V)** — prunes whole clusters with the PCA-box and
-   slab bounds. The bounds (`pca_lower_bound` / `pca_slab_lower_bound`) and their
+2. **Cluster Pruner (Section V)** — prunes whole clusters with the intra- and
+   inter-cluster bounds. The bounds (`pca_lower_bound` / `pca_slab_lower_bound`) and their
    index-time fitting live in `lib/ClusterIO.h`, the local PCA in `lib/PcaFit.h`.
 3. **I/O Optimizer (Section VI)** — reads only the surviving cells via `io_uring`
    + `O_DIRECT`. Cell splitting in `lib/PcaFit.h`, the per-cell bound
